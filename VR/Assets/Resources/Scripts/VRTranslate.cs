@@ -11,10 +11,11 @@ public class VRTranslate : MonoBehaviour
 
     public float m_speed = 0.01f;
     public float r_speed = 0.1f;
+    public Transform mainCam;
     GameObject playerCam;
     GameObject playerReal;
-
-    enum direction { mv_forward, mv_backward, left_rotate, right_rotate, none };
+    
+    enum direction { mv_forward, mv_backward, mv_left, mv_right, left_rotate, right_rotate, none};
 
     // Start is called before the first frame update
     void Start()
@@ -26,42 +27,46 @@ public class VRTranslate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction movement = direction.none, rotation = direction.none;
+        direction movementForwardBackward = direction.none, movementRightLeft = direction.none, rotation = direction.none;
         Animator a = playerReal.GetComponentInChildren<Animator>();
 
         bool walk = false;
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.Z))
         {
-            playerReal.transform.position += playerReal.transform.forward * m_speed;
+            playerReal.transform.position += mainCam.forward * m_speed;
             walk = true;
-            movement = direction.mv_forward;
+            movementForwardBackward=direction.mv_forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            playerReal.transform.position += -playerReal.transform.forward * m_speed;
+            playerReal.transform.position -= mainCam.forward * m_speed;
             walk = true;
-            movement = direction.mv_backward;
+            movementForwardBackward=direction.mv_backward;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.Q))
         {
-            playerReal.transform.eulerAngles -= new Vector3(0.0f, r_speed, 0.0f);
-
+            playerReal.transform.position -= mainCam.right * m_speed;
+            walk = true;
+            movementRightLeft=direction.mv_left;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            playerReal.transform.eulerAngles += new Vector3(0.0f, r_speed, 0.0f);
+            playerReal.transform.position += mainCam.right * m_speed;
+            walk = true;
+            movementRightLeft=direction.mv_right;
         }
-
-        smartCamDisplace(movement, rotation);
+        
         if (Input.GetKey(KeyCode.J))
         {
             addCubeToScene();
         }
+        
+        smartCamDisplace(movementForwardBackward, movementRightLeft, rotation);
         a.SetBool("walk", walk);
 
     }
-
+    
     void addCubeToScene()
     {
         GameObject newObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -69,26 +74,36 @@ public class VRTranslate : MonoBehaviour
             playerCam.transform.position.y, playerCam.transform.position.z);
     }
 
-    void smartCamDisplace(direction movement = direction.none, direction rotate = direction.none)
+    void smartCamDisplace(direction movementForwardBackward = direction.none, direction movementRightLeft = direction.none, direction rotate = direction.none)
     {
-        translateCam(movement);
+        translateCam(movementForwardBackward, movementRightLeft);
         rotateCam(rotate);
-        curveCam(movement, rotate);
+        curveCam(movementForwardBackward,rotate);
     }
 
     //to complete
-    void translateCam(direction mov)
+    void translateCam(direction movFB, direction movRL)
     {
         bool walk = false;
 
-        if (mov == direction.mv_forward)
+        if (movFB == direction.mv_forward)
         {
-            playerCam.transform.position += playerReal.transform.forward * m_speed;
+            playerCam.transform.position += mainCam.forward * m_speed;
             walk = true;
         }
-        if (mov == direction.mv_backward)
+        if (movFB==direction.mv_backward)
         {
-            playerCam.transform.position += -playerReal.transform.forward * m_speed;
+            playerCam.transform.position -= mainCam.forward * m_speed;
+            walk = true;
+        }
+        if (movRL==direction.mv_right)
+        {
+            playerCam.transform.position += mainCam.right * m_speed;
+            walk = true;
+        }
+        if (movRL==direction.mv_left)
+        {
+            playerCam.transform.position -= mainCam.right * m_speed;
             walk = true;
         }
 
