@@ -3876,8 +3876,9 @@ MonoBehaviour:
   translate_gain: 1
   rotation_gain: 1
   curvature_gain: 1
-  m_speed: 0.005
+  m_speed: 0.05
   r_speed: 0.2
+  mainCam: {fileID: 929034390}
 --- !u!4 &1383258158
 Transform:
   m_ObjectHideFlags: 0
@@ -5187,6 +5188,7 @@ GameObject:
   - component: {fileID: 1773476386}
   - component: {fileID: 1773476390}
   - component: {fileID: 1773476389}
+  - component: {fileID: 1773476391}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -5290,6 +5292,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1773476391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773476385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdcff528c7ff39d448a8f23ca9062332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedH: 2
+  speedV: 2
+  playerReal: {fileID: 929034389}
 --- !u!1001 &1782081153
 PrefabInstance:
   m_ObjectHideFlags: 0
