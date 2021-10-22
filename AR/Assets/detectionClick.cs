@@ -1,12 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
+public class Suspect
+{
+    public string name { get;}
+    public string gender { get;}
+    public string thirteen { get; }
+    public string fourteen { get; }
+    public string fifteen { get; }  
+    public string sixteen { get; }
+    public string seventeen { get; }
+    public string hair { get; }
+    public string height { get; }
+    public string relation { get; }
+    public string transport { get; }
+    public string clothing { get; }
+
+    public Suspect(string name, string gender, string thirteen, string fourteen, string fifteen, string sixteen, string seventeen, string hair, string height, string relation, string transport, string clothing)
+    {
+        this.name = name;
+        this.gender = gender;
+        this.thirteen = thirteen;
+        this.fourteen = fourteen;
+        this.fifteen = fifteen;
+        this.sixteen = sixteen;
+        this.seventeen = seventeen;
+        this.hair = hair;
+        this.height = height;
+        this.relation = relation;
+        this.transport = transport;
+        this.clothing = clothing;
+    }
+}
 public class detectionClick : MonoBehaviour
 {
+    List<Suspect> suspects;
     Camera mcamera;
     void Awake()
     {
+        suspects = new List<Suspect>();
+        string line; 
+        string[] suspectCaracteristics;
+        FileStream aFile = new FileStream("./suspects.csv", FileMode.Open);
+        StreamReader sr = new StreamReader(aFile);
+
+        // read data in line by line
+        line = sr.ReadLine();
+        line = sr.ReadLine();
+        while (line != null)
+        {
+            suspectCaracteristics = line.Split(',');
+            suspects.Add(new Suspect(suspectCaracteristics[0], suspectCaracteristics[1], suspectCaracteristics[2], suspectCaracteristics[3], suspectCaracteristics[4], suspectCaracteristics[5], suspectCaracteristics[6], suspectCaracteristics[7], suspectCaracteristics[8], suspectCaracteristics[9], suspectCaracteristics[10], suspectCaracteristics[11]));
+            line = sr.ReadLine();
+        }
+        sr.Close();
         mcamera = Camera.main;
 
     }
