@@ -20,7 +20,7 @@ public class VRTranslate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerCam = GameObject.Find("PlayerCam");
+        playerCam = GameObject.Find("PlayerRealVR");
         playerReal = GameObject.Find("PlayerReal");
     }
 
