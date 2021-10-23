@@ -4084,9 +4084,13 @@ MonoBehaviour:
   translate_gain: 1
   rotation_gain: 1
   curvature_gain: 1
-  m_speed: 0.05
+  m_speed: 0.02
   r_speed: 0.2
   mainCam: {fileID: 929034390}
+  gun: {fileID: 1022056941132780, guid: 5042592e80148ca47bd5d5025de78850, type: 3}
+  pan: {fileID: 1285915698140758, guid: 3f69e204d4c1ff6408c3cddaa93477bc, type: 3}
+  can: {fileID: 1360529770084390, guid: ad3312bde6cb4f04bb625819a6a83483, type: 3}
+  bottle: {fileID: 1284210060167302, guid: 84897346c76ecaa45af8b67ed3bfc9b8, type: 3}
 --- !u!4 &1383258158
 Transform:
   m_ObjectHideFlags: 0

@@ -14,6 +14,11 @@ public class VRTranslate : MonoBehaviour
     public Transform mainCam;
     GameObject playerCam;
     GameObject playerReal;
+
+    public GameObject gun;
+    public GameObject pan;
+    public GameObject can;
+    public GameObject bottle;
     
     enum direction { mv_forward, mv_backward, mv_left, mv_right, left_rotate, right_rotate, none};
 
@@ -57,21 +62,35 @@ public class VRTranslate : MonoBehaviour
             movementRightLeft=direction.mv_right;
         }
         
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            addCubeToScene();
+            addItemToScene(gun);
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            addItemToScene(pan);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            addItemToScene(can);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            addItemToScene(bottle);
+        }
+
         smartCamDisplace(movementForwardBackward, movementRightLeft, rotation);
         a.SetBool("walk", walk);
 
     }
     
-    void addCubeToScene()
+    void addItemToScene(GameObject item)
     {
-        GameObject newObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        newObject.transform.position = new Vector3(this.playerCam.transform.position.x,
-            playerCam.transform.position.y, playerCam.transform.position.z);
+        Instantiate(item, new Vector3(0, 0, 0), Quaternion.identity);
+        //Change position of object to where the player is looking
     }
 
     void smartCamDisplace(direction movementForwardBackward = direction.none, direction movementRightLeft = direction.none, direction rotate = direction.none)
