@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Suspect
 {
@@ -114,10 +115,14 @@ public class detectionClick : MonoBehaviour
     RectTransform rectTransform;
     TextMeshPro text;
     string LastClickedWord;
+    GameObject gun ;
+    Text notebook;
 
     void Awake()
     {
-        
+        GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
+        notebook = canvas.GetComponentInChildren<Text>();
+
         displayText = new GameObject();
         obj = GameObject.FindGameObjectWithTag("School");
 
@@ -209,6 +214,14 @@ public class detectionClick : MonoBehaviour
                         Debug.Log("Garden shop");
                         displayInfo("GardenShop");
                         break;
+                    case "SM_Bld_Shop_Corner_01 (1)":
+                        Debug.Log("Shooting Range");
+                        displayInfo("ShootingRange");
+                        break;
+                    case "SM_Bld_Shop_Corner_01 (2)":
+                        Debug.Log("Happy Bar");
+                        displayInfo("HappyBar");
+                        break;
                     case "SM_Bld_Shop_01 (1)":
                         Debug.Log("Market");
                         displayInfo("Market");
@@ -226,23 +239,28 @@ public class detectionClick : MonoBehaviour
             {
                 LastClickedWord = text.textInfo.wordInfo[wordIndex].GetWord();
                 Debug.Log("Clicked on " + LastClickedWord);
+                notebook.text += " " + LastClickedWord ;
             }
         }
     }
 
     private void displayInfo(string tag)
     {
+        gun = GameObject.Find("SM_Wep_ToyGun_OneShot_01");
         if (text.gameObject.activeSelf && obj.tag == tag)
         {
             text.gameObject.SetActive(false);
+            gun.GetComponent<Renderer>().enabled = false;
         }
         else
         {
             text.gameObject.SetActive(true);
+            gun.GetComponent<Renderer>().enabled = true;
         }
         obj = GameObject.FindGameObjectWithTag(tag);
         displayText.transform.SetParent(obj.transform, true);
         rectTransform.localPosition = new Vector3(0f, 0f, 0f);
         text.SetText(suspects.getSuspectInBuilding(tag));
+        
     }
 }
