@@ -12,7 +12,8 @@ public class VRTranslate : MonoBehaviour
     public float m_speed = 0.01f;
     public float r_speed = 0.1f;
     public Transform mainCam;
-    GameObject playerCam;
+    public Camera camera;
+    GameObject playerRealVR;
     GameObject playerReal;
 
     public GameObject gun;
@@ -25,7 +26,7 @@ public class VRTranslate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerCam = GameObject.Find("PlayerRealVR");
+        playerRealVR = GameObject.Find("PlayerRealVR");
         playerReal = GameObject.Find("PlayerReal");
     }
 
@@ -89,8 +90,14 @@ public class VRTranslate : MonoBehaviour
     
     void addItemToScene(GameObject item)
     {
-        Instantiate(item, new Vector3(0, 0, 0), Quaternion.identity);
-        //Change position of object to where the player is looking
+        item.AddComponent<PickableObject>();
+        RaycastHit hit;
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit)) {
+            Vector3 objectHit = hit.point;
+            item.transform.position = objectHit+Vector3.up/2;
+        }
+        Instantiate(item, item.transform.position, Quaternion.identity);
     }
 
     void smartCamDisplace(direction movementForwardBackward = direction.none, direction movementRightLeft = direction.none, direction rotate = direction.none)
@@ -107,22 +114,22 @@ public class VRTranslate : MonoBehaviour
 
         if (movFB == direction.mv_forward)
         {
-            playerCam.transform.position += mainCam.forward * m_speed;
+            playerRealVR.transform.position += mainCam.forward * m_speed;
             walk = true;
         }
         if (movFB==direction.mv_backward)
         {
-            playerCam.transform.position -= mainCam.forward * m_speed;
+            playerRealVR.transform.position -= mainCam.forward * m_speed;
             walk = true;
         }
         if (movRL==direction.mv_right)
         {
-            playerCam.transform.position += mainCam.right * m_speed;
+            playerRealVR.transform.position += mainCam.right * m_speed;
             walk = true;
         }
         if (movRL==direction.mv_left)
         {
-            playerCam.transform.position -= mainCam.right * m_speed;
+            playerRealVR.transform.position -= mainCam.right * m_speed;
             walk = true;
         }
 
@@ -131,7 +138,7 @@ public class VRTranslate : MonoBehaviour
     //to complete
     void rotateCam(direction rot)
     {
-        playerCam.transform.rotation = playerReal.transform.rotation;
+        playerRealVR.transform.rotation = playerReal.transform.rotation;
     }
 
     //to complete
