@@ -112,38 +112,13 @@ public class detectionClick : MonoBehaviour
                 
                 switch (hit.transform.name)
                 {
-                    case "Hambuger":
-                        Debug.Log("Hit Hambuger");
-                        break;
-
-                    case "pizza":
-                        Debug.Log("Hit Pizza");
-                        break;
-
-                    case "Cheese_02":
-                        Debug.Log("Hit Cheese");
-                        break;
-
-                    case "Steak_Uncooked":
-                        Debug.Log("Hit Steak");
-                        break;
-
-                    case "Drink_03":
-                        Debug.Log("Hit Drink");
-                        break;
-
-                    case "Toast":
-                        Debug.Log("Hit Toast");
-                        break;
-
-                    case "Police_Badge_Modern_01_Tornado_Studio":
-                        Debug.Log("Hit Police");
-                        break;
 
                     case "SM_Env_Tree_03":
                         Debug.Log("Hit Tree");
                         break;
-
+                    case "SM_Prop_LargeSign_Pizza_01":
+                        Debug.Log("Pizza");
+                        break;
                     case "SM_Bld_Apartment_Stack_02":
                         Debug.Log("Hit Apartment");
                         break;
@@ -162,6 +137,12 @@ public class detectionClick : MonoBehaviour
 
                     case "SM_Prop_Shelf_01":
                         Debug.Log("Hit Shelf");
+                        break;
+                    case "SM_Bld_Shop_Corner_01":
+                        Debug.Log("Garden shop");
+                        break;
+                    case "SM_Bld_Shop_01 (1)":
+                        Debug.Log("Market");
                         break;
 
                     default:
