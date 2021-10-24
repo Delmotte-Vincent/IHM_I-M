@@ -3,7 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Library
+  - Park
+  - Market
+  - Pizzeria
+  - School
+  - Neighborhood
+  - GardenShop
+  - Theater
+  - ShootingRange
+  - HappyBar
+  - gun
+  - Canvas
   layers:
   - Default
   - TransparentFX

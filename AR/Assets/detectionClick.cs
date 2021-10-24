@@ -115,11 +115,14 @@ public class detectionClick : MonoBehaviour
     RectTransform rectTransform;
     TextMeshPro text;
     string LastClickedWord;
-    GameObject gun ;
+    GameObject soda ;
     Text notebook;
 
     void Awake()
     {
+        soda = GameObject.Find("SM_Prop_Can_Soda_01");
+        soda.GetComponent<Renderer>().enabled = false;
+
         GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
         notebook = canvas.GetComponentInChildren<Text>();
 
@@ -165,8 +168,15 @@ public class detectionClick : MonoBehaviour
 
     }
 
+    void Start()
+    {
+        soda = GameObject.Find("SM_Prop_Can_Soda_01");
+        soda.GetComponent<Renderer>().enabled = false;
+    }
+
     void Update()
     {
+        
         // Process a mouse button click.
         if (Input.GetMouseButtonDown(0))
         {
@@ -246,16 +256,16 @@ public class detectionClick : MonoBehaviour
 
     private void displayInfo(string tag)
     {
-        gun = GameObject.Find("SM_Wep_ToyGun_OneShot_01");
+        //soda = GameObject.Find("SM_Prop_Can_Soda_01");
         if (text.gameObject.activeSelf && obj.tag == tag)
         {
             text.gameObject.SetActive(false);
-            gun.GetComponent<Renderer>().enabled = false;
+            soda.GetComponent<Renderer>().enabled = false;
         }
         else
         {
             text.gameObject.SetActive(true);
-            gun.GetComponent<Renderer>().enabled = true;
+            soda.GetComponent<Renderer>().enabled = true;
         }
         obj = GameObject.FindGameObjectWithTag(tag);
         displayText.transform.SetParent(obj.transform, true);
