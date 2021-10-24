@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VRTranslate : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class VRTranslate : MonoBehaviour
     public GameObject pan;
     public GameObject can;
     public GameObject bottle;
+
+    public GameObject canvas;
+    public GameObject button;
+    int nbItems;
     
     enum direction { mv_forward, mv_backward, mv_left, mv_right, left_rotate, right_rotate, none};
 
@@ -65,22 +70,26 @@ public class VRTranslate : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            addItemToScene(gun);
+            GameObject gunObject = addItemToScene(gun);
+            makeButton("Gun", gunObject);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            addItemToScene(pan);
+            GameObject panObject = addItemToScene(pan);
+            makeButton("Pan", panObject);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
-            addItemToScene(can);
+            GameObject canObject = addItemToScene(can);
+            makeButton("Can", canObject);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
-            addItemToScene(bottle);
+            GameObject bottleObject = addItemToScene(bottle);
+            makeButton("Bottle", bottleObject);
         }
 
         smartCamDisplace(movementForwardBackward, movementRightLeft, rotation);
@@ -88,16 +97,39 @@ public class VRTranslate : MonoBehaviour
 
     }
     
-    void addItemToScene(GameObject item)
+    GameObject addItemToScene(GameObject item)
     {
-        item.AddComponent<PickableObject>();
+        //item.AddComponent<PickableObject>();
         RaycastHit hit;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit)) {
             Vector3 objectHit = hit.point;
             item.transform.position = objectHit+Vector3.up/2;
         }
-        Instantiate(item, item.transform.position, Quaternion.identity);
+        return Instantiate(item, item.transform.position, Quaternion.identity);
+    }
+
+    public void makeButton(string name, GameObject gameObject)
+    {
+        GameObject myNewGameObject = Instantiate(button, canvas.transform);
+        
+        nbItems++;
+
+        myNewGameObject.transform.position -= new Vector3(0, nbItems*50, 0);
+
+        myNewGameObject.GetComponentInChildren<Text>().text = name;
+
+        myNewGameObject.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Color color = gameObject.GetComponent<Renderer>().material.color;
+            if(color != Color.white)
+            {
+                gameObject.GetComponent<Renderer>().material.color = Color.white;
+            } else
+            {
+                gameObject.GetComponent<Renderer>().material.color = Color.red;
+            }
+        });
     }
 
     void smartCamDisplace(direction movementForwardBackward = direction.none, direction movementRightLeft = direction.none, direction rotate = direction.none)
