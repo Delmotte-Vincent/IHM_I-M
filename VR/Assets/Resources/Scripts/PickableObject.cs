@@ -10,6 +10,9 @@ public class PickableObject : MonoBehaviour
     private bool hasPlayer = false;
     private bool beingCarried = false;
     private bool touched = false;
+    public AudioSource pickItem;
+    public AudioSource dropItem;
+    public AudioSource destroyItem;
 
     void Start()
     {
@@ -22,8 +25,8 @@ public class PickableObject : MonoBehaviour
         // check distance entre objet et joueur
         float dist = Vector3.Distance(gameObject.transform.position, player.position);
 
-        // si - ou = 1.4 unités de distance = on peut ramasser
-        if (dist <= 0.8f)
+        // si - ou = 1.2 unités de distance = on peut ramasser
+        if (dist <= 1.2f)
         {
             hasPlayer = true;
         }
@@ -35,6 +38,7 @@ public class PickableObject : MonoBehaviour
         // si on peut ramasser et qu'on appuie sur E = on porte l'objet
         if (hasPlayer && Input.GetKey(KeyCode.E))
         {
+            pickItem.Play();
             GetComponent< Rigidbody>().isKinematic = true;
             transform.parent = playerCam;
             beingCarried = true;
@@ -52,9 +56,18 @@ public class PickableObject : MonoBehaviour
                 touched = false;
             }
 
+            // if(Input.GetKeyDown(KeyCode.R))
+            // {
+            //     destroyItem.Play();
+            //     Destroy(gameObject);
+            //     transform.parent = null;
+            //     beingCarried = false;
+            // }
+
             // Clique gauche = on jette l'objet
             if (Input.GetMouseButtonDown(0))
             {
+                dropItem.Play();
                 GetComponent< Rigidbody>().isKinematic = false;
                 transform.parent = null;
                 beingCarried = false;
@@ -63,6 +76,7 @@ public class PickableObject : MonoBehaviour
             // clique droit on pose l'objet
             else if (Input.GetMouseButtonDown(1))
             {
+                dropItem.Play();
                 GetComponent< Rigidbody>().isKinematic = false;
                 transform.parent = null;
                 beingCarried = false;

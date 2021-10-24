@@ -99,7 +99,7 @@ public class VRTranslate : MonoBehaviour
     
     GameObject addItemToScene(GameObject item)
     {
-        item.AddComponent<PickableObject>();
+        //item.AddComponent<PickableObject>();
         RaycastHit hit;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit)) {
