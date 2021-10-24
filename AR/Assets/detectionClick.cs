@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -120,9 +121,8 @@ public class detectionClick : MonoBehaviour
 
     void Awake()
     {
-        soda = GameObject.Find("SM_Prop_Can_Soda_01");
-        soda.GetComponent<Renderer>().enabled = false;
-
+        soda = getInvisibleObject("SM_Prop_Can_Soda_01");
+        
         GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
         notebook = canvas.GetComponentInChildren<Text>();
 
@@ -145,7 +145,7 @@ public class detectionClick : MonoBehaviour
 
         rectTransform = displayText.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(0, 0);
-        rectTransform.localPosition = new Vector3(0f, 0f, 0f);
+        rectTransform.localPosition = new Vector3(0f, 11.0f, 0f);
         
         suspects = new Suspects();
         string line; 
@@ -168,11 +168,6 @@ public class detectionClick : MonoBehaviour
 
     }
 
-    void Start()
-    {
-        soda = GameObject.Find("SM_Prop_Can_Soda_01");
-        soda.GetComponent<Renderer>().enabled = false;
-    }
 
     void Update()
     {
@@ -260,17 +255,41 @@ public class detectionClick : MonoBehaviour
         if (text.gameObject.activeSelf && obj.tag == tag)
         {
             text.gameObject.SetActive(false);
-            soda.GetComponent<Renderer>().enabled = false;
         }
         else
         {
             text.gameObject.SetActive(true);
-            soda.GetComponent<Renderer>().enabled = true;
         }
         obj = GameObject.FindGameObjectWithTag(tag);
         displayText.transform.SetParent(obj.transform, true);
-        rectTransform.localPosition = new Vector3(0f, 0f, 0f);
+        rectTransform.localPosition = new Vector3(0f, 11f, 0f);
         text.SetText(suspects.getSuspectInBuilding(tag));
         
+        if (obj.tag == "HappyBar")
+        {
+            if (text.gameObject.activeSelf)
+            {
+                soda.SetActive(true);
+            }
+            else
+            {
+                soda.SetActive(false);
+            }
+
+        }
+        
+    }
+
+    // pour trouver les object qui sont invisibles (activeSelf == false)
+    private GameObject getInvisibleObject(String name)
+    {
+        foreach (GameObject go in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+        {
+            if (go.name == name && !EditorUtility.IsPersistent(go.transform.root.gameObject) && !(go.hideFlags == HideFlags.NotEditable || go.hideFlags == HideFlags.HideAndDontSave))
+            {
+                return go;
+            }
+        }
+        return null;
     }
 }
