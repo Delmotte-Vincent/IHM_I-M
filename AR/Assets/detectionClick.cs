@@ -85,23 +85,23 @@ public class Suspects
         {
             if (s.thirteen.Equals(building))
             {
-                thirteen += " " + s.name;
+                thirteen += " " + s.name + ",";
             }
             if (s.fourteen.Equals(building))
             {
-                fourteen += " " + s.name;
+                fourteen += " " + s.name + ",";
             }
             if (s.fifteen.Equals(building))
             {
-                fifteen += " " + s.name;
+                fifteen += " " + s.name +",";
             }
             if (s.sixteen.Equals(building))
             {
-                sixteen += " 16h : " + s.name;
+                sixteen += " " + s.name +",";
             }
             if (s.seventeen.Equals(building))
             {
-                seventeen += " " + s.name;
+                seventeen += " " + s.name+",";
             }
         }
         return thirteen + "\n" + fourteen + "\n" + fifteen + "\n" + sixteen + "\n" + seventeen;
@@ -117,11 +117,19 @@ public class detectionClick : MonoBehaviour
     TextMeshPro text;
     string LastClickedWord;
     GameObject soda ;
+    GameObject gun ;
+    GameObject Couch ;
+    GameObject Shelf ;
+    GameObject Victim ;
     Text notebook;
 
     void Awake()
     {
         soda = getInvisibleObject("SM_Prop_Can_Soda_01");
+        gun = getInvisibleObject("SM_Wep_ToyGun_OneShot_01");
+        Couch = getInvisibleObject("SM_Prop_Couch_04");
+        Shelf = getInvisibleObject("SM_Prop_Shelf_01 (1)");
+        Victim = getInvisibleObject("Character_Male_Jacket_01 (1)");
         
         GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
         notebook = canvas.GetComponentInChildren<Text>();
@@ -138,9 +146,10 @@ public class detectionClick : MonoBehaviour
         text.SetText("test");
         text.enableWordWrapping = false;
         text.gameObject.SetActive(false);
-        text.fontSize = 8;
+        text.fontSize = 7;
         text.outlineWidth = 0.125f;
         text.fontStyle = FontStyles.Bold;
+        text.color= new Color32(0,0,0,255) ;
 
 
         rectTransform = displayText.GetComponent<RectTransform>();
@@ -211,7 +220,7 @@ public class detectionClick : MonoBehaviour
                         Debug.Log("Hit ToyGun");
                         break;
 
-                    case "SM_Prop_Shelf_01":
+                    case "SM_Bld_OfficeOld_Small_Base_01":
                         Debug.Log("Hit Shelf");
                         displayInfo("Library");
                         break;
@@ -265,17 +274,49 @@ public class detectionClick : MonoBehaviour
         rectTransform.localPosition = new Vector3(0f, 11f, 0f);
         text.SetText(suspects.getSuspectInBuilding(tag));
         
-        if (obj.tag == "HappyBar")
+        if (obj.tag == "Neighborhood")
         {
             if (text.gameObject.activeSelf)
             {
                 soda.SetActive(true);
+                Couch.SetActive(true);
+                Shelf.SetActive(true);
+                Victim.SetActive(true);
+                
             }
             else
             {
                 soda.SetActive(false);
+                Couch.SetActive(false);
+                Shelf.SetActive(false);
+                Victim.SetActive(false);
+                
             }
 
+        }
+        else{
+            soda.SetActive(false);
+                Couch.SetActive(false);
+                Shelf.SetActive(false);
+                Victim.SetActive(false);
+        }
+
+        if (obj.tag == "ShootingRange")
+        {
+            if (text.gameObject.activeSelf)
+            {
+                gun.SetActive(true);
+                
+            }
+            else
+            {
+                gun.SetActive(false);
+                
+            }
+
+        }
+        else{
+            gun.SetActive(false);
         }
         
     }
